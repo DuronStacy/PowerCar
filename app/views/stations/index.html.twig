@@ -10,48 +10,63 @@
 
 
 {% block javascripts %}
-    {{ parent() }}
-    <script>
+{{ parent() }}
+<script>
 
-        
-        function initializeMapAndLocator(){
 
-            var nearestStations = {{ nearestStations|json_encode()|raw }};
+    function initializeMapAndLocator(){
 
-            L.control.locate({
-   
-                strings: {
-                    title: "Show me Where I am, yo!",
-                }
-            
-            }).addTo(map);
+        var nearestStations = {{ nearestStations|json_encode()|raw }};
 
-            
-            function onLocationFound(myPosition) {
+        L.control.locate({
 
-                var radius = myPosition.accuracy /2;
-                
-                var all = [myPosition.latitude, myPosition.longitude];
-
-                var latlng = L.latLng(all);
-
-                L.marker(myPosition.latlng).addTo(map)
-                    .bindPopup("You are within " + radius + " meters from this point").openPopup();
-                L.circle(myPosition.latlng, radius).addTo(map);
-
-                //nearStation/46.674223/5.551638
-                console.log(myPosition);
+            strings: {
+                title: "Show me Where I am, yo!",
             }
+            
+        }).addTo(map);
 
-            map.on('locationfound', onLocationFound);
+
+        function onLocationFound(myPosition) {
+
+            var radius = myPosition.accuracy /2;
+
+            var all = [myPosition.latitude, myPosition.longitude];
+
+            var latlng = L.latLng(all);
+
+            L.marker(myPosition.latlng).addTo(map)
+            .bindPopup("You are within " + radius + " meters from this point").openPopup();
+            L.circle(myPosition.latlng, radius).addTo(map);
+
+            $.ajax(function() {
+
+               url : 'http://localhost/PowerCar/nearStation/' + myPosition.latitude + '/' + myPosition.longitude 
+               dataType : 'json',
+               success: function(datas){  
+                console.log('success', datas); 
+            }
+                    //myPosition.latitude
+                    //myPosition.longitude
+                    //nearStation/46.674223/5.551638
+                    
+                    //au retour de l'appel
+                    // boucler sur les résultats du json
+                    // ajouter les markers
+                })
+
+            console.log(myPosition.latitude);
         }
-        
-        initializeMapAndLocator();
-        
-        
+
+        map.on('locationfound', onLocationFound);
+    }
+
+    initializeMapAndLocator();
+
+
         var allStations = {{ allStations|json_encode()|raw }}; // recupérer les données sur le controller
         //console.log(allStations);
-       
+
         
         $.each(allStations, function(key3, allStations) {   // stcker les données dans des variable
             var name = allStations.name_station;
@@ -61,10 +76,10 @@
             var all = [allStations.latitude, allStations.longitude];
             var popups = "";
 
-        
 
-                popups += '<em><b>' +name + 
-                    '</b><br>' + address +' '+ zip + ' ' + city +'</em>';
+
+            popups += '<em><b>' +name + 
+            '</b><br>' + address +' '+ zip + ' ' + city +'</em>';
             
 
             L.marker(all).addTo(map).bindPopup(popups); // Ajouter les marqueur sur la carte
@@ -92,22 +107,22 @@
                 var connector = technical.connectors_type;
 
                 textPopup += '<em><b>' +name +
-                    '</b><br>' + address +' '+ zip + ' ' + city +
-                    '<br>' + compagny + 
-                    '<br><b> Type de charge:</b> ' + charge + 
-                    '<br><b> Nombre PDC :</b> ' + pdc + 
-                    '<br><b> Type connecteur:</b> '+ connector +'</em>'
-   
+                '</b><br>' + address +' '+ zip + ' ' + city +
+                '<br>' + compagny + 
+                '<br><b> Type de charge:</b> ' + charge + 
+                '<br><b> Nombre PDC :</b> ' + pdc + 
+                '<br><b> Type connecteur:</b> '+ connector +'</em>'
 
-            L.marker(pos).addTo(map).bindPopup(textPopup)
-        });
 
-        map.fitBounds(bounds);
-    })
-               
+                L.marker(pos).addTo(map).bindPopup(textPopup)
+            });
+
+            map.fitBounds(bounds);
+        })
+
 
         
 
         
     </script>
-{% endblock %}
+    {% endblock %}
