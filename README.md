@@ -1,5 +1,5 @@
 # Power Car
-POwerCar is a Website that allow you to search, show and geolocate power station for electric vehicle. Only available for France. (But wherever you are, we like you anyway. :) ) 
+PowerCar is a Website that allow you to search, show and geolocate power station for electric vehicle. Only available in France. (But wherever you are, we like you anyway. :) ) 
 
 ## Features
 * Show all station in France
