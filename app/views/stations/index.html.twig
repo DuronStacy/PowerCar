@@ -22,7 +22,13 @@
 
         var nearestStations = {{ nearestStations|json_encode()|raw }};
 
-        L.control.locate({
+            L.control.locate({
+                setView: false,
+                strings: {
+                    title: "Show me Where I am !",
+                }
+            
+            }).addTo(map);
 
             map.on('locationfound', onLocationFound);
 
@@ -49,6 +55,8 @@
       
                     //console.log(datas);
 
+                    var bounds = [];
+
                     $.each(datas, function(key4, data) {
                         var name = data.name_station;
                         var address = data.address;
@@ -61,7 +69,13 @@
 
                         L.marker(all).addTo(map).bindPopup(popups); // Ajouter les marqueur sur la carte
 
+
+                        bounds[key4] = all;
+
+
                     });
+
+                     map.fitBounds(bounds); // zoom vers les marqueurs
 
 
 
