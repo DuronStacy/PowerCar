@@ -1,3 +1,16 @@
+# Power Car
+POwerCar is a Website that allow you to search, show and geolocate power station for electric vehicle. Only available for France. (But wherever you are, we like you anyway. :) ) 
+
+## Features
+* Show all station in France
+* Searching for a city's station
+* Geolocate yourself to find the nearest one
+
+## What we have used
+A free database; Leaflet ; Leaflet's Plugins ; µ-MVC ;
+
+*******
+
 # µ-MVC, a micro framework for learning purposes
 
 µ-MVC is a microframework for learning MVC design pattern and object-oriented programming. This was built for my job at Access Code School, for my students.
